@@ -64,20 +64,13 @@ We have already configured a secure **GitHub Actions Workflow** in your reposito
 5. Under **Build and deployment** -> **Source**, click the dropdown and change it from *Deploy from a branch* to **GitHub Actions**.
 6. That's it! GitHub Actions will now automatically intercept your pushes, build the application properly (`npm run build`), and host the optimized `dist` folder on your Pages subdomain with zero manual updates.
 
-### Option B: Manual GitHub Pages Deployment (Deploying `dist/`)
+### Option B: One-Command Manual Deployment (Pre-Configured!)
 
-If you prefer to deploy from branches, remember you must deploy the **contents of the `/dist` folder**, not the root folder:
+We have pre-installed and configured the `gh-pages` pipeline directly in your `package.json`! You can compile and deploy your application to your GitHub repository's custom domains with a single command:
 
-1. Install the deployment tool:
-   ```bash
-   npm install -D gh-pages
-   ```
-2. Add a deploy script to your `package.json` file inside `"scripts"`:
-   ```json
-   "predeploy": "npm run build",
-   "deploy": "gh-pages -d dist"
-   ```
-3. Deploy directly via command line:
+1. Double check that your `package.json` points to the correct GitHub remote directory.
+2. In your terminal inside this project directory, run:
    ```bash
    npm run deploy
    ```
+This automatically runs your production-compilation step (`npm run build`) and publishes the final optimized, relative-resource bundle in the `/dist` directory to your repository's virtual `gh-pages` deployment branch immediately. No manual setups are needed!
