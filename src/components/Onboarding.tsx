@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Check, ArrowRight, ArrowLeft } from "lucide-react";
 import { OnboardingPreferences } from "../types";
+import { safeLocalStorage } from "../utils";
 
 interface OnboardingProps {
   onComplete: (prefs: OnboardingPreferences) => void;
@@ -65,7 +66,7 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onComplete, onSkip }) =>
         bonusType: selectedBonus || "Welcome Match"
       };
       
-      localStorage.setItem("casinoswipe_onboarding_prefs", JSON.stringify(finalPrefs));
+      safeLocalStorage.setItem("casinoswipe_onboarding_prefs", JSON.stringify(finalPrefs));
       onComplete(finalPrefs);
     }
   };

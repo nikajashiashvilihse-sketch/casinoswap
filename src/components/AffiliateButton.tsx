@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Loader2, ArrowUpRight } from "lucide-react";
+import { safeLocalStorage } from "../utils";
 
 interface AffiliateButtonProps {
   casino_id: string;
@@ -36,13 +37,13 @@ export const AffiliateButton: React.FC<AffiliateButtonProps> = ({
       let user_preferences = { games: [], payments: [], bonusType: "Welcome Match" };
 
       try {
-        const storedGeo = localStorage.getItem("casinoswipe_detected_geo");
+        const storedGeo = safeLocalStorage.getItem("casinoswipe_detected_geo");
         if (storedGeo) {
           const parsedGeo = JSON.parse(storedGeo);
           if (parsedGeo.country_name) user_country = parsedGeo.country_name;
         }
         
-        const storedPrefs = localStorage.getItem("casinoswipe_onboarding_prefs");
+        const storedPrefs = safeLocalStorage.getItem("casinoswipe_onboarding_prefs");
         if (storedPrefs) {
           user_preferences = JSON.parse(storedPrefs);
         }

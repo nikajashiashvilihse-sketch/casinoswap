@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { Casino, OnboardingPreferences } from "../types";
 import { AffiliateButton } from "../components/AffiliateButton";
+import { safeLocalStorage } from "../utils";
 
 interface DiscoverViewProps {
   casinos: Casino[];
@@ -66,7 +67,7 @@ export const DiscoverView: React.FC<DiscoverViewProps> = ({
     const fetchGeo = async () => {
       setGeoLoading(true);
       try {
-        const storedGeo = localStorage.getItem("casinoswipe_detected_geo");
+        const storedGeo = safeLocalStorage.getItem("casinoswipe_detected_geo");
         if (storedGeo) {
           const parsed = JSON.parse(storedGeo);
           if (parsed.country_name) {
@@ -81,7 +82,7 @@ export const DiscoverView: React.FC<DiscoverViewProps> = ({
           const data = await res.json();
           if (data.country_name) {
             setDetectedCountry(data.country_name);
-            localStorage.setItem("casinoswipe_detected_geo", JSON.stringify(data));
+            safeLocalStorage.setItem("casinoswipe_detected_geo", JSON.stringify(data));
           }
         }
       } catch (err) {

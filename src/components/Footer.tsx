@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ShieldCheck, Info } from "lucide-react";
+import { safeLocalStorage } from "../utils";
 
 interface FooterProps {
   onNavigate: (path: string) => void;
@@ -9,14 +10,14 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   const [showCookieBanner, setShowCookieBanner] = useState(false);
 
   useEffect(() => {
-    const isDismissed = localStorage.getItem("casinoswipe_cookie_dismissed");
+    const isDismissed = safeLocalStorage.getItem("casinoswipe_cookie_dismissed");
     if (!isDismissed) {
       setShowCookieBanner(true);
     }
   }, []);
 
   const dismissCookie = () => {
-    localStorage.setItem("casinoswipe_cookie_dismissed", "true");
+    safeLocalStorage.setItem("casinoswipe_cookie_dismissed", "true");
     setShowCookieBanner(false);
   };
 

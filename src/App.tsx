@@ -4,6 +4,7 @@ import { Footer } from "./components/Footer";
 import { Confetti } from "./components/Confetti";
 import { INITIAL_CASINOS } from "./data";
 import { Casino } from "./types";
+import { safeLocalStorage } from "./utils";
 
 // Import Views
 import { LandingView } from "./views/LandingView";
@@ -77,13 +78,13 @@ export default function App() {
       let user_preferences = { games: [], payments: [], bonusType: "Welcome Match" };
 
       try {
-        const storedGeo = localStorage.getItem("casinoswipe_detected_geo");
+        const storedGeo = safeLocalStorage.getItem("casinoswipe_detected_geo");
         if (storedGeo) {
           const parsedGeo = JSON.parse(storedGeo);
           if (parsedGeo.country_name) user_country = parsedGeo.country_name;
         }
         
-        const storedPrefs = localStorage.getItem("casinoswipe_onboarding_prefs");
+        const storedPrefs = safeLocalStorage.getItem("casinoswipe_onboarding_prefs");
         if (storedPrefs) {
           user_preferences = JSON.parse(storedPrefs);
         }
@@ -127,7 +128,7 @@ export default function App() {
   // Sync saved bookmarks from storage on init
   useEffect(() => {
     try {
-      const stored = localStorage.getItem("casinoswipe_liked_collection");
+      const stored = safeLocalStorage.getItem("casinoswipe_liked_collection");
       if (stored) {
         const parsed = JSON.parse(stored);
         setLikedCasinos(parsed);
@@ -212,7 +213,7 @@ export default function App() {
 
     const updated = [...likedCasinos, casino];
     setLikedCasinos(updated);
-    localStorage.setItem("casinoswipe_liked_collection", JSON.stringify(updated));
+    safeLocalStorage.setItem("casinoswipe_liked_collection", JSON.stringify(updated));
 
     // Trigger celebratory particle confetti burst
     setConfettiActive(true);
@@ -225,13 +226,13 @@ export default function App() {
   const handleRemoveLiked = (id: string) => {
     const updated = likedCasinos.filter((x) => x.id !== id);
     setLikedCasinos(updated);
-    localStorage.setItem("casinoswipe_liked_collection", JSON.stringify(updated));
+    safeLocalStorage.setItem("casinoswipe_liked_collection", JSON.stringify(updated));
   };
 
   // Wipe bookmark collection completely
   const handleClearAllLiked = () => {
     setLikedCasinos([]);
-    localStorage.setItem("casinoswipe_liked_collection", JSON.stringify([]));
+    safeLocalStorage.setItem("casinoswipe_liked_collection", JSON.stringify([]));
   };
 
   // Side-by-side related casinos mapping selection
