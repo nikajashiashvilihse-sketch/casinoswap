@@ -145,19 +145,23 @@ export default function App() {
 
     const handleHoverCheck = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      if (
-        target &&
-        (target.tagName === "BUTTON" ||
+      if (!target) {
+        setIsHoveringClickable(false);
+        return;
+      }
+      try {
+        const isClickable = 
+          target.tagName === "BUTTON" ||
           target.tagName === "A" ||
           target.tagName === "SELECT" ||
           target.tagName === "OPTION" ||
-          target.closest("button") ||
-          target.closest("a") ||
-          target.style.cursor === "pointer" ||
-          target.classList.contains("cursor-pointer"))
-      ) {
-        setIsHoveringClickable(true);
-      } else {
+          (typeof target.closest === "function" && (target.closest("button") || target.closest("a"))) ||
+          (target.style && target.style.cursor === "pointer") ||
+          (target.classList && typeof target.classList.contains === "function" && target.classList.contains("cursor-pointer"));
+        
+        setIsHoveringClickable(!!isClickable);
+      } catch (err) {
+        // Silently recover to avoid halting the event loop or crashing the screen
         setIsHoveringClickable(false);
       }
     };
